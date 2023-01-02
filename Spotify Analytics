@@ -1,0 +1,73 @@
+# For this project, I downloaded Spotify data from Kaggle.
+# Then I created a table to insert Spotify data into.
+# Finally, I performed analytics on the data using SQL. 
+
+#Creating the table: 
+CREATE TABLE BIT_DB.Spotifydata (
+id integer PRIMARY KEY,
+artist_name varchar NOT NULL,
+track_name varchar NOT NULL,
+track_id varchar NOT NULL,
+popularity integer NOT NULL,
+danceability decimal(4,3) NOT NULL,
+energy decimal(4,3) NOT NULL,
+key integer NOT NULL,
+loudness decimal(5,3) NOT NULL,
+mode integer NOT NULL,
+speechiness decimal(5,4) NOT NULL,
+acousticness decimal(6,5) NOT NULL,
+instrumentalness text NOT NULL,
+liveness decimal(5,4) NOT NULL,
+valence decimal(4,3) NOT NULL,
+tempo decimal(6,3) NOT NULL,
+duration_ms integer NOT NULL,
+time_signature integer NOT NULL 
+)
+
+#1. First I determined the avg popularity, danceability, and energy by artist 
+
+SELECT
+artist_name
+,track_name
+,avg(popularity)
+,avg(danceability)
+,avg(energy)
+FROM BIT_DB.spotifydata
+GROUP BY artist_name;
+
+#2. I then determined who the Top 10 artists are by popularity 
+
+SELECT track_name, artist_name, popularity
+FROM BIT_DB.spotifydata
+ORDER BY popularity desc
+LIMIT 10;
+
+#3. Then I determined how danceable are each of the most popular songs 
+
+SELECT track_name, artist_name, popularity,
+danceability,
+CASE
+WHEN danceability >= .7 THEN 'HIGH_DANCEABILITY'
+WHEN danceability >= .4 THEN 'AVG_DANCEABILITY'
+ELSE 'LOW_DANCEABILITY'
+END AS 'danceability_status'
+FROM BIT_DB.Spotifydata
+ORDER BY popularity desc;
+
+#4. Next I searched how many of the songs are in major key vs minor key 
+
+SELECT COUNT(*), 
+CASE
+WHEN mode = 1 THEN 'Major'
+ELSE 'Minor'
+END AS 'Modality_key'
+FROM BIT_DB.Spotifydata
+GROUP BY modality_key;
+
+#5. Finally, I searched which keys are the most popular among the listed songs? 
+
+Select count(key), key
+FROM BIT_DB.Spotifydata
+GROUP BY key
+HAVING COUNT(key) >=6
+ORDER BY COUNT(key) desc;
