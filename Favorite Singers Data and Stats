@@ -1,42 +1,55 @@
-// First I create a table of my favorite singers in the US
-CREATE TABLE favorite_US_singers (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, home_state TEXT, birth_year INTEGER);
+-- Create a table of my favorite US singers
+CREATE TABLE favorite_US_singers (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT,
+    birth_year INTEGER
+);
 
-INSERT INTO top_songs (title, artist, artist_id, release_year) VALUES ("Welcome to the black parade", "Gerard Way", 1, 2006);
-INSERT INTO top_songs (title, artist, artist_id, release_year) VALUES ("Misery Business", "Hayley Williams", 2, 2007);
-INSERT INTO top_songs (title, artist, artist_id, release_year) VALUES ("Good Riddance", "Billy Armstrong", 3, 1997);
-INSERT INTO top_songs (title, artist, artist_id, release_year) VALUES ("Duality", "Corey Taylor", 4, 2004);
+-- Insert data into the favorite_US_singers table
+INSERT INTO favorite_US_singers (name, birth_year) VALUES
+    ('Gerard Way', 1977),
+    ('Hayley Williams', 1988),
+    ('Billy Armstrong', 1972),
+    ('Corey Taylor', 1973);
 
+-- Create a table of my favorite singers' top songs and the release date of them
+CREATE TABLE top_songs (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    title TEXT,
+    artist TEXT,
+    artist_id INTEGER,
+    release_year INTEGER
+);
 
-//I create a a second table of their top songs and the release date of them
-CREATE TABLE top_songs (id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT, artist TEXT, artist_id INTEGER, release_year INTEGER);
+-- Insert data into the top_songs table
+INSERT INTO top_songs (title, artist, artist_id, release_year) VALUES
+    ('Welcome to the black parade', 'Gerard Way', 1, 2006),
+    ('Misery Business', 'Hayley Williams', 2, 2007),
+    ('Good Riddance', 'Billy Armstrong', 3, 1997),
+    ('Duality', 'Corey Taylor', 4, 2004);
 
-INSERT INTO top_songs (title, artist, release_year) VALUES ("Welcome to the black parade", "Gerard Way", 2006);
-INSERT INTO top_songs (title, artist, release_year) VALUES ("Misery Business", "Hayley Williams", 2007);
-INSERT INTO top_songs (title, artist, release_year) VALUES ("Good Riddance", "Billy Armstrong", 1997);
-INSERT INTO top_songs (title, artist, release_year) VALUES ("Duality", "Corey Taylor", 2004);
+-- Create a table of the bands my favorite singers are the lead singer of
+CREATE TABLE bands (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    band_name TEXT,
+    lead_singer TEXT
+);
 
+-- Insert data into the bands table
+INSERT INTO bands (band_name, lead_singer) VALUES
+    ('My Chemical Romance', 'Gerard Way'),
+    ('Paramore', 'Hayley Williams'),
+    ('Green Day', 'Billy Armstrong'),
+    ('Slipknot', 'Corey Taylor');
 
-//I create a third table of their bands they are the lead singer of
-CREATE TABLE bands (id INTEGER PRIMARY KEY AUTOINCREMENT, band_name TEXT, Lead_singer Text);
-
-INSERT INTO bands (band_name, Lead_singer) VALUES ("My Chemical Romance", "Gerard Way");
-
-INSERT INTO bands (band_name, Lead_singer) VALUES ("Paramore", "Hayley Williams");
-
-INSERT INTO bands (band_name, Lead_singer) VALUES ("Green Day", "Billy Armstrong"); 
-
-INSERT INTO bands (band_name, Lead_singer) VALUES ("Slipknot", "Corey Taylor"); 
-
-
-//I compare them by their them by their top songs 
-SELECT fs.name as fav_artist, t.title as top_songs
+-- Compare my favorite singers by their top songs
+SELECT fs.name AS fav_artist, ts.title AS top_song
 FROM favorite_US_singers fs
-JOIN top_songs t
-ON t.artist_id = fs.id;
+JOIN top_songs ts ON ts.artist_id = fs.id;
 
-// Finally I join them by a left outer function by their name and lead singer
-SELECT fs.name, fs.home_state
+-- Finally, join them by a left outer join on their name and lead singer
+SELECT fs.name, bs.band_name
 FROM favorite_US_singers fs
-LEFT OUTER JOIN bands ss
-ON fs.name = ss.Lead_singer
-ORDER BY ss.band_name DESC;
+LEFT JOIN bands bs ON fs.name = bs.lead_singer
+ORDER BY bs.band_name DESC;
+
