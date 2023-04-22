@@ -1,0 +1,21 @@
+# Lets imagine we have a game that stores high scores for players, I create a database of high scores. 
+CREATE TABLE high_scores (
+  id INTEGER PRIMARY KEY,
+  player_name VARCHAR(255) NOT NULL UNIQUE,
+  score INTEGER NOT NULL,
+  date TIMESTAMP DEFAULT CURRENT_TIMESTAMP);
+
+#I insert some data into the high scores table.
+
+INSERT INTO high_scores (player_name, score) VALUES
+  ('Alyssa', 100),
+  ('John', 200),
+  ('Tom', 150);
+
+#I update a score for a player
+
+UPDATE high_scores SET score = 250 WHERE player_name = 'Alyssa';
+
+#I then delete a players high score
+
+DELETE FROM high_scores WHERE player_name = 'Tom';
